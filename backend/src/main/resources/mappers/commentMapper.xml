@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="comment">
+	<select id="selectList" resultType="CommentDto">
+		select * from comment where reviewid=#{reviewId}
+	</select>
+	<insert id="create">
+		insert into ssafysk.comment (no, userid, reviewid, content, create_date)
+		values (#{no}, #{userid}, #{reviewid}, #{content}, curdate());
+	</insert>
+	<delete id="delete">
+		delete from comment where no=#{no}
+	</delete>
+	<select id="count" resultType="int">
+		select count(*) from comment where reviewid=#{reviewId}
+	</select>
+	
+	<!-- Notice -->
+	<update id="check">
+		update comment SET is_checked=1 where userid=#{userid} and reviewid=#{reviewid};
+	</update>
+</mapper>

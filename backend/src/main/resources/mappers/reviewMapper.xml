@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="review">
+	<select id="selectreslist" resultType="RestaurantsDto">
+		select * from restaurants
+		order by grade desc
+		LIMIT 100;
+	</select>
+	<select id="selectres" resultType="RestaurantsDto">
+		select * from restaurants where idrestaurants = #{no}
+	</select>
+	<select id="selectUser" resultType="ReviewDto">
+		select * from review where userid=#{userId}
+	</select>
+	 <select id="selectreviewalllist" resultType="ReviewDto">
+		select * from review where resid = #{no}
+	</select>
+	<select id="selectreviewlist" resultType="ReviewDto">
+		select * from review
+	</select>
+	 <insert id="insertreview">
+       INSERT INTO `ssafysk`.`review`( `userid` ,`resid`, `content`, `reviewrank`, `create_date`, `image`, `like_cnt`) 
+        values (#{userid},#{resid}, #{content}, #{reviewrank}, curdate(),#{image},0) 
+    </insert>
+	<insert id="insertLike">
+		insert into heart(reviewid, userid) values(#{reviewid}, #{userid})
+	</insert>
+	<delete id="deleteLike">
+		delete from heart where userid=#{userid} and reviewid=#{reviewid}
+	</delete>
+	<select id="searchLike" resultType="LikeDto">
+		select * from heart where userid=#{userid} and reviewid=#{reviewid}
+	</select>
+	<update id="plusLikeCnt">
+		update review set like_cnt=like_cnt+1 where no=#{reviewid}
+	</update>
+	<update id="minusLikeCnt">
+		update review set like_cnt=like_cnt-1 where no=#{reviewid}
+	</update>
+	<update id="changecountrank">
+		update restaurants set countgrade=countgrade+1 where idrestaurants=#{resid}
+	</update>
+	<update id="changerank">
+		update restaurants set grade=#{grade} where idrestaurants=#{resid}
+	</update>
+	<select id="resname" resultType="String">
+		select name from restaurants where idrestaurants=#{resid}
+	</select>
+	
+	<select id="selectrankone" resultType="ReviewDto">
+		SELECT * FROM ssafysk.review where resid = #{no} order by reviewrank;
+	</select>
+	
+		<select id="searchReview" resultType="ReviewDto">
+		select * from review where content LIKE CONCAT('%',#{input},'%')
+	</select>
+	<select id="selectByReviewId" resultType="ReviewDto">
+		select * from review where no=#{reviewId}
+	</select>
+	
+</mapper>

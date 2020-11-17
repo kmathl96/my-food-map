@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+       <package name="com.web.curation.model.dto"/>
+    </typeAliases>
+	<mappers>	  
+		<mapper resource="mappers/userMapper.xml"/>
+		<mapper resource="mappers/reviewMapper.xml"/>
+		<mapper resource="mappers/mapMapper.xml"/>
+		<mapper resource="mappers/commentMapper.xml"/>
+	</mappers>
+</configuration>

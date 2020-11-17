@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="map">
+  	<select id = "selectsido" resultType="SidoCodeDTO">
+  		select left(sido_code,2) sido_code, sido_name FROM sidocode
+		order by sido_code;
+  	</select>
+  	<select id = "selectgugun" resultType="SidoCodeDTO">
+  		SELECT left(gugun_code,5) gugun_code, gugun_name FROM guguncode
+		where left(gugun_code,2) = ${sido}
+		ORDER BY gugun_code;
+  	</select>
+  	<select id = "selectdong" resultType="SidoCodeDTO">
+  		SELECT left(code,5), city,gugun,dong FROM dongcode
+		where code like CONCAT('%',#{gugun},'%')
+		ORDER BY code;
+  	</select>
+  	<select id = "selectstore" resultType="RestaurantsDto">
+  		select idrestaurants,res_type,menu,pnumber,jibun,name,code,time,doro,grade,countgrade from restaurants
+  		where jibun like concat('%',LEFT('${dong}',2),'%');
+  	</select>
+  	<select id = "selectstoree" resultType="RestaurantsDto">
+  		select * from `ssafysk`.`restaurants` order by grade desc
+		LIMIT 20;
+  	</select>
+	 <select id = "selectmystore" resultType="RestaurantsDto">
+  		select * from restaurants
+  	 	where lat <![CDATA[ < ]]> #{lat}+0.01 and lat <![CDATA[ > ]]> #{lat}-0.01 and lon <![CDATA[ < ]]> #{lon}+0.002 and lon <![CDATA[ > ]]> #{lon}-0.002
+  	 	order by grade desc LIMIT 20;
+  	</select>
+  	
+  	<select id="searchStore" resultType="RestaurantsDto">
+		select * from restaurants
+		where name LIKE CONCAT('%',#{input},'%') or res_type LIKE CONCAT('%',#{input},'%')
+	</select>
+  	
+</mapper>
+	

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="user">
+	<select id="select" resultType="MemberDto">
+		select * from user where userid=#{userid}
+	</select>
+	<select id="selectByEmail" resultType="MemberDto">
+		select * from user where email=#{email}
+	</select>
+	<select id="nickname" resultType="MemberDto">
+		select * from user where nickname=#{nickname}
+	</select>
+	<insert id="insert">
+		insert into user(email,password,nickname,create_date,image) values(#{email}, #{password},#{nickname}, CURRENT_TIME(),#{image})
+	</insert>
+	<delete id="delete">
+		delete from user where userid=#{userid}
+	</delete>
+	<update id="update">
+		update user set nickname=#{nickname}, password=#{password} where userid=#{userid}
+	</update>
+	<select id="selectAllUsers" resultType="MemberDto">
+		select * from user
+	</select>
+		<select id="searchUser" resultType="MemberDto">
+		select * from user where nickname LIKE CONCAT('%',#{input},'%')
+	</select>
+	
+	
+	<!-- follow -->
+	<insert id="insertFollow">
+		insert into follow(followerId, followingId) values(#{followerId}, #{followingId})
+	</insert>
+	<delete id="deleteFollow">
+		delete from follow where followerId=#{followerId} and followingId=#{followingId}
+	</delete>
+	<select id="searchFollow" resultType="FollowDto">
+		select * from follow where followerId=#{followerId} and followingId=#{followingId}
+	</select>
+	<select id="selectAllFollow" resultType="FollowDto">
+		select * from follow
+	</select>
+	<update id="plusFollowUserFollowerCnt">
+		update user set follower_cnt=follower_cnt+1 where userid=#{followingId}
+	</update>
+	<update id="minusFollowUserFollowerCnt">
+		update user set follower_cnt=follower_cnt-1 where userid=#{followingId}
+	</update>
+	<update id="plusUserFollowingCnt">
+		update user set following_cnt=following_cnt+1 where userid=#{followerId}
+	</update>
+	<update id="minusUserFollowingCnt">
+		update user set following_cnt=following_cnt-1 where userid=#{followerId}
+	</update>
+	<select id="selectFollowing" resultType="int">
+		select followingId from follow where followerId=#{userId}
+	</select>
+	<select id="selectFollower" resultType="int">
+		select followerId from follow where followingId=#{userId}
+	</select>
+	
+	<select id="reviewnickname" resultType="String">
+		select nickname from user where userid=#{userid}
+	</select>
+	<select id="reviewuserimage" resultType="String">
+		select image from user where userid=#{userid}
+	</select>
+</mapper>
